@@ -1,5 +1,5 @@
 <script>
-  import { apiUrl, userIdKey, roomCodeKey } from '../../config.ts'
+  import { apiUrl, userIdKey, roomCodeKey, nicknameKey } from '../../config.ts'
   import { goto } from '@roxi/routify'
   export let roomCode
 
@@ -26,6 +26,7 @@
 
     localStorage.setItem(userIdKey, userId)
     localStorage.setItem(roomCodeKey, roomCode)
+    localStorage.setItem(nicknameKey, nickname)
 
     $goto('../lobby')
   }
@@ -48,10 +49,6 @@
     flex-direction: column;
     height: 100vh;
   }
-  a:hover {
-    cursor: pointer;
-  }
-
   h1 {
     text-align: center;
   }
