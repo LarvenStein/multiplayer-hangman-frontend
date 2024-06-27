@@ -1,12 +1,19 @@
 <script>
   import { nicknameKey, roomCodeKey, apiUrl, userIdKey } from '../../config.ts'
+  import { goto } from '@roxi/routify'
+  import { checkUser } from '../../components/checkUser.js'
+  import Players from '../../components/players.svelte'
   export let roomCode = localStorage.getItem(roomCodeKey)
   export let nickname = localStorage.getItem(nicknameKey)
   export let joinUrl = `${window.location.origin}/join/${roomCode}`
   let userId = localStorage.getItem(userIdKey)
   export let isGameLeader
   export let adminData
-  let wordList = 1 // tempoary
+  export let players
+  export let colWidth
+  let wordListId = 1 // tempoary
+
+  checkUser()
 
   async function getPlayers() {
     const res = await fetch(`${apiUrl}/games/${roomCode}/players`, {
@@ -18,7 +25,12 @@
     })
     const data = await res.json()
     isGameLeader = data.isPlayerGameLeader
-    return data
+    players = data
+
+    // Loop it!
+    setTimeout(() => {
+      getPlayers()
+    }, 10000)
   }
 
   async function getAdminData() {
@@ -48,11 +60,29 @@
       body: JSON.stringify({
         rounds: rounds,
         maxPlayers: maxPlayers,
-        wordList: wordList,
+        wordList: wordListId,
         newGameLeader: userId,
       }),
     })
     adminData = await res.json()
+  }
+
+  async function getWordlists() {
+    const res = await fetch(`${apiUrl}/wordlists`)
+    const json = await res.json()
+    return json
+  }
+
+  async function startGame() {
+    const res = await fetch(`${apiUrl}/games/${roomCode}`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'x-user-id': userId,
+      },
+    })
+    const json = await res.json()
+    $goto(`../round/${json.roundId}`)
   }
 </script>
 
@@ -67,13 +97,13 @@
       <div class="col full">
         <p>loading...</p>
       </div>
-    {:then players}
-      <div class="col" data-full={!isGameLeader}>
+    {:then}
+      <div class="col" data-full={!isGameLeader} bind:clientWidth={colWidth}>
         <h2>Players</h2>
         <div class="content grid">
-          {#each players.players as player}
-            <h3>{player}</h3>
-          {/each}
+          {#key players}
+            <Players {players} {colWidth} />
+          {/key}
         </div>
       </div>
       {#if isGameLeader}
@@ -100,14 +130,41 @@
           </div>
           <div class="col">
             <h2>Wordlist</h2>
+            <div class="content">
+              {#await getWordlists() then wordLists}
+                {#each wordLists as wordlist}
+                  <div
+                    class="wordlist wl-{wordlist.id}"
+                    on:click={() => {
+                      document.querySelector(`.wordlist.wl-${wordListId}`).classList.remove('selected')
+                      wordListId = wordlist.id
+                      updateGameSettings()
+                      document.querySelector(`.wordlist.wl-${wordListId}`).classList.add('selected')
+                    }}
+                  >
+                    <h3>{wordlist.name}</h3>
+                  </div>
+                {/each}
+              {/await}
+            </div>
           </div>
         {/await}
       {/if}
     {/await}
   </div>
+  {#if isGameLeader}
+    <button class="top" on:click={() => startGame()}>START THE GAME ➤</button>
+  {/if}
 </main>
 
 <style>
+  button:hover {
+    /* font-size: 40px; */
+    letter-spacing: 0.5cap;
+    transform: scale(1);
+    background: black;
+    color: white;
+  }
   main {
     width: 100%;
   }
@@ -189,5 +246,24 @@
     border-left: none;
     border-right: none;
     font-weight: bolder;
+  }
+  .wordlist {
+    text-align: center;
+    width: max;
+    border: 2px solid gray;
+    cursor: pointer;
+    transition: all 0.5s;
+    margin: 15px;
+  }
+  .wordlist h3 {
+    transition: all 0.5s;
+    margin: 5px;
+  }
+  .wordlist:hover > h3 {
+    margin: 24px;
+  }
+  .wordlist.selected {
+    background-color: black;
+    color: white;
   }
 </style>
