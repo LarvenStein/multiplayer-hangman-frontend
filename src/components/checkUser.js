@@ -1,6 +1,6 @@
 import { nicknameKey, roomCodeKey, userIdKey, apiUrl } from '../config.ts'
 
-export function checkUser() {
+export async function checkUser() {
   let roomCode = localStorage.getItem(roomCodeKey)
   let nickname = localStorage.getItem(nicknameKey)
   let userId = localStorage.getItem(userIdKey)
@@ -15,20 +15,16 @@ export function checkUser() {
     return
   }
 
-  fetch(`${apiUrl}/games/${roomCode}/players`, {
+  const resp = await fetch(`${apiUrl}/games/${roomCode}/players`, {
     method: 'GET',
     headers: {
       Accept: 'application/json',
       'x-user-id': userId,
     },
   })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('Server returned error')
-      }
-    })
-    .catch((error) => {
-      alert('The provided room is invalid!\n' + error)
-      window.location.href = '/'
-    })
+  if (!resp.ok) {
+    let error = 'Server returned error'
+    alert('The provided room is invalid or the room is full!\n' + error)
+    window.location.href = '/'
+  }
 }
