@@ -29,6 +29,13 @@
     flex-direction: column;
     height: 100vh;
   }
+  .buttons:hover > .big:hover {
+    padding: 25px 75px 25px 75px;
+  }
+  .buttons:hover > .big:not(:hover) {
+    font-size: 0;
+    padding: 0;
+  }
   a:hover {
     cursor: pointer;
   }
