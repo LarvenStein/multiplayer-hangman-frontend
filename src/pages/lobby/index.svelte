@@ -3,6 +3,8 @@
   import { goto } from '@roxi/routify'
   import { checkUser } from '../../components/checkUser.js'
   import Players from '../../components/players.svelte'
+  import Snackbar from 'node-snackbar'
+
   export let roomCode = localStorage.getItem(roomCodeKey)
   export let nickname = localStorage.getItem(nicknameKey)
   export let joinUrl = `${window.location.origin}/join/${roomCode}`
@@ -84,6 +86,11 @@
       }),
     })
     adminData = await res.json()
+    Snackbar.show({
+      pos: 'bottom-right',
+      text: 'Updated game Settings',
+      showAction: false,
+    })
   }
 
   async function getWordlists() {
@@ -101,6 +108,11 @@
       },
     })
     const json = await res.json()
+    Snackbar.show({
+      pos: 'bottom-right',
+      text: 'Starting game...',
+      showAction: false,
+    })
     $goto(`../round/${json.roundId}`)
   }
 </script>
@@ -109,7 +121,18 @@
   <div class="top">
     <!--Top Row-->
     <h2>{nickname}</h2>
-    <h1>The hangman game | <span on:click={() => navigator.clipboard.writeText(joinUrl)}>{roomCode}</span></h1>
+    <h1>
+      The hangman game | <span
+        on:click={() => {
+          navigator.clipboard.writeText(joinUrl)
+          Snackbar.show({
+            pos: 'bottom-right',
+            text: 'Room link copied',
+            showAction: false,
+          })
+        }}>{roomCode}</span
+      >
+    </h1>
   </div>
   <div class="center">
     {#await getPlayers()}

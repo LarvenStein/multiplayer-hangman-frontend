@@ -1,5 +1,6 @@
 <script>
   import { goto } from '@roxi/routify'
+  import Snackbar from 'node-snackbar'
 
   function joinGame() {
     let roomCode = document.querySelector('input').value

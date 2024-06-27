@@ -23,7 +23,7 @@
     <header>
       <h2>The hangman game</h2>
       <h1>Game Summary</h1>
-      <!-- <a href="game.html" class="big">New Game</a> -->
+      <a href="/lobby" class="big">Back to the lobby</a>
       <!--TODO when API is updated-->
     </header>
     <h2>Rounds overview:</h2>
