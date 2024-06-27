@@ -11,11 +11,13 @@
   export let adminData
   export let players
   export let colWidth
-  let wordListId = 1 // tempoary
+  let wordListId = 1
+  let killSwitch = false
 
   checkUser()
 
   async function getPlayers() {
+    checkGameStarted()
     const res = await fetch(`${apiUrl}/games/${roomCode}/players`, {
       method: 'GET',
       headers: {
@@ -28,9 +30,26 @@
     players = data
 
     // Loop it!
-    setTimeout(() => {
-      getPlayers()
-    }, 10000)
+    if (!killSwitch) {
+      setTimeout(() => {
+        getPlayers()
+      }, 10000)
+    }
+  }
+
+  async function checkGameStarted() {
+    const res = await fetch(`${apiUrl}/games/${roomCode}`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'x-user-id': userId,
+      },
+    })
+    const data = await res.json()
+    if (data.status == 'playing') {
+      $goto(`../round/${data.round}`)
+      killSwitch = true
+    }
   }
 
   async function getAdminData() {
