@@ -60,12 +60,9 @@
     </div>
   </div>
 </div>
-<link
-  rel="stylesheet"
-  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
-/>
 
 <style>
+  @import url(https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200);
   .detail {
     display: flex;
     text-align: left;
@@ -85,13 +82,7 @@
     padding: 25px;
     border: 2px solid gray;
     border-radius: 25px;
-  }
-
-  .results {
-    padding: 25px;
-    border: 2px solid gray;
-    border-radius: 25px;
-    margin: 25px;
+    margin: 15px;
   }
 
   .flex {
