@@ -42,6 +42,6 @@ button {
 }
 button:hover {
   transform: scale(0.9);
-  background: black;
+  background: black !important;
   color: white;
 }
