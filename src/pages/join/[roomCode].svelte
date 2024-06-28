@@ -9,7 +9,7 @@
     let nickname = document.querySelector('input').value
     let userId
 
-    if (nickname.replace(/\s/g, '').length < 1) return alert('Please input a username.\nSpaces will be deleted.')
+    if (nickname.replace(/\s/g, '').length < 3 || nickname.replace(/\s/g, '').length > 25) return alert('Please input a username.\nSpaces will be deleted.')
 
     let response = await fetch(`${apiUrl}/games/${roomCode}/players`, {
       method: 'POST',
@@ -36,7 +36,7 @@
   <h1>You're about to join "{roomCode}"!</h1>
   <h2>Before that, I need your name. Please input it here:</h2>
   <div>
-    <input placeholder="Nickname" maxlength="25" />
+    <input placeholder="Nickname" minlength="3" maxlength="25" />
     <button on:click={() => joinGame()}>Join ➤</button>
   </div>
 </main>
