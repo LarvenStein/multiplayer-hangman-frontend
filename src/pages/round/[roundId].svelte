@@ -40,7 +40,6 @@
       $goto('../lobby/summary')
     }
     if (!killSwitch && !noLoop) {
-      console.log(noLoop)
       setTimeout(() => {
         getRoundState()
       }, 5000)
