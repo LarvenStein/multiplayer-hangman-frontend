@@ -39,8 +39,7 @@
       killSwitch = true
       $goto('../lobby/summary')
     }
-
-    if (!killSwitch | noLoop) {
+    if (!killSwitch || !noLoop) {
       setTimeout(() => {
         getRoundState()
       }, 5000)
