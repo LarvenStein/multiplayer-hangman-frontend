@@ -16,6 +16,7 @@
     margin: 25px;
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
   }
   .letter {
     font-size: 50px;

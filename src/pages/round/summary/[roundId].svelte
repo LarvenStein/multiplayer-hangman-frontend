@@ -48,11 +48,24 @@
     align-items: center;
     flex-direction: column;
   }
+  main {
+    justify-content: flex-start !important;
+  }
 
   h1 {
     font-size: 128px;
     margin-top: 0;
+    text-align: center;
   }
+  @media only screen and (max-width: 768px) {
+  h1 {
+    font-size: 96px !important;
+  }
+  header {
+    height: auto;
+    justify-content: unset;
+  }
+}
   #emoji {
     margin-bottom: -35px;
     font-size: 64px;

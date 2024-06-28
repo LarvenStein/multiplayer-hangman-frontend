@@ -49,5 +49,15 @@
   h1 {
     font-size: 128px;
     margin-top: 0;
+    text-align: center;
+  }
+  @media only screen and (max-width: 768px) {
+    h1 {
+      font-size: 96px !important;
+    }
+    header {
+      height: auto;
+      justify-content: unset;
+    }
   }
 </style>

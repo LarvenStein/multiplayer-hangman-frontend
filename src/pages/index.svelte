@@ -37,6 +37,11 @@
     flex-direction: column;
     height: 100vh;
   }
+  @media only screen and (max-width: 768px) {
+  h1 {
+    font-size: 96px !important;
+  }
+}
   .buttons:hover > .big:hover {
     padding: 25px 75px 25px 75px;
   }
