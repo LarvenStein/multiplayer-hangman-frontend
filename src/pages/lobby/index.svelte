@@ -246,6 +246,19 @@
     border-bottom-right-radius: 225px 15px;
     border-bottom-left-radius: 15px 255px;
   }
+  @media only screen and (max-width: 768px) {
+    main {
+      justify-content: start !important;
+    }
+    .center {
+      justify-content: start;
+      flex-direction: column;
+      max-height: none;
+    }
+    .col {
+      width: 100% !important;
+    }
+  }
   .col {
     width: 33%;
     border-right: 3px solid gray;
