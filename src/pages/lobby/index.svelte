@@ -100,6 +100,7 @@
   }
 
   async function startGame() {
+    document.querySelector("button.top").disabled = true
     const res = await fetch(`${apiUrl}/games/${roomCode}`, {
       method: 'POST',
       headers: {
