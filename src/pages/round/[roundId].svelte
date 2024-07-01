@@ -33,7 +33,7 @@
     firstRender = false
 
     if (data.status != 'active') {
-      $goto(`./summary/${roundId}`)
+      $goto(`/round/summary/${roundId}`)
     }
     if (data.message != undefined) {
       killSwitch = true
