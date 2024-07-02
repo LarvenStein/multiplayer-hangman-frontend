@@ -42,7 +42,7 @@
     if (!killSwitch && !noLoop) {
       setTimeout(() => {
         getRoundState()
-      }, 5000)
+      }, 3000)
     }
   }
 
@@ -158,11 +158,6 @@
     <div>
       <FalseGuesses {roundState} />
     </div>
-
-    <!-- <div class="failed-guesses">
-      <h2>Failed guesses:</h2>
-      <ul></ul>
-    </div> -->
   </main>
 {/await}
 

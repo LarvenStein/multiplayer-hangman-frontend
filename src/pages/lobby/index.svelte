@@ -118,29 +118,23 @@
   }
 </script>
 
+{#await getPlayers() then}
 <main>
   <div class="top">
     <!--Top Row-->
-    <h2>{nickname}</h2>
-    <h1>
-      The hangman game | <span
-        on:click={() => {
-          navigator.clipboard.writeText(joinUrl)
-          Snackbar.show({
-            pos: 'bottom-right',
-            text: 'Room link copied',
-            showAction: false,
-          })
-        }}>{roomCode}</span
-      >
+    <h2>The hangman game | {nickname}</h2>
+    <h1 on:click={() => {
+      navigator.clipboard.writeText(joinUrl)
+      Snackbar.show({
+        pos: 'bottom-right',
+        text: 'Room link copied',
+        showAction: false,
+      })
+    }}>
+      Room code: {roomCode}
     </h1>
   </div>
   <div class="center">
-    {#await getPlayers()}
-      <div class="col full">
-        <p>loading...</p>
-      </div>
-    {:then}
       <div class="col" data-full={!isGameLeader} bind:clientWidth={colWidth}>
         <h2>Players</h2>
         <div class="content grid">
@@ -193,12 +187,12 @@
           </div>
         {/await}
       {/if}
-    {/await}
   </div>
   {#if isGameLeader}
     <button class="top" on:click={() => startGame()}>START THE GAME ➤</button>
   {/if}
 </main>
+{/await}
 
 <style>
   button:hover {
@@ -229,12 +223,14 @@
     margin-bottom: 0;
     text-align: center;
   }
-  .top span {
+  .top h1 {
     cursor: pointer;
     transition: all 0.5s;
+    font-size: 28pt;
+
   }
-  .top span:hover {
-    font-size: 20pt;
+  .top h1:hover {
+    font-size: 32pt;
   }
   .center {
     width: 75%;
