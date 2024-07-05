@@ -18,7 +18,7 @@
 
 <main>
   {#if exsistingRoomCode != undefined}
-    <a class="join-again" href="/lobby">
+    <a class="join-again" href="/join/{exsistingRoomCode}">
       Do you want to join {exsistingRoomCode} again?
     </a>
   {/if}

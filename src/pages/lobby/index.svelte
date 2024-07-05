@@ -4,6 +4,8 @@
   import { checkUser } from '../../components/checkUser.js'
   import Players from '../../components/players.svelte'
   import Snackbar from 'node-snackbar'
+  import * as signalR from '@microsoft/signalr';
+  import {connection} from '../../signalr.js'
 
   export let roomCode = localStorage.getItem(roomCodeKey)
   export let nickname = localStorage.getItem(nicknameKey)
@@ -18,8 +20,23 @@
 
   checkUser()
 
-  async function getPlayers() {
+
+  connection.on("NewPlayer", data => {
+    getPlayers(data)
+  });
+
+  connection.on("RefreshPlayers", data => {
+    console.log("refresh")
+    getPlayers()
+  })
+
+  connection.on("GameStarted", data => {
+    checkGameStarted(data)
+  })
+
+  async function getPlayers(data = undefined) {
     checkGameStarted()
+    if(data == undefined) {
     const res = await fetch(`${apiUrl}/games/${roomCode}/players`, {
       method: 'GET',
       headers: {
@@ -27,29 +44,27 @@
         'x-user-id': userId,
       },
     })
-    const data = await res.json()
+    data = await res.json()
     isGameLeader = data.isPlayerGameLeader
+  }
     players = data
 
-    // Loop it!
-    if (!killSwitch) {
-      setTimeout(() => {
-        getPlayers()
-      }, 10000)
-    }
   }
 
-  async function checkGameStarted() {
-    const res = await fetch(`${apiUrl}/games/${roomCode}`, {
+  async function checkGameStarted(data = undefined) {
+    if(data == undefined) {
+      const res = await fetch(`${apiUrl}/games/${roomCode}`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
         'x-user-id': userId,
       },
     })
-    const data = await res.json()
-    if (data.status == 'playing') {
-      $goto(`../round/${data.round}`)
+    data = await res.json()
+    }
+
+    if (data.status == 'playing' || data.status == undefined) {
+      $goto(`../round/${data.roundId}`)
       killSwitch = true
     }
   }
@@ -101,20 +116,21 @@
 
   async function startGame() {
     document.querySelector("button.top").disabled = true
-    const res = await fetch(`${apiUrl}/games/${roomCode}`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'x-user-id': userId,
-      },
-    })
-    const json = await res.json()
+    // const res = await fetch(`${apiUrl}/games/${roomCode}`, {
+    //   method: 'POST',
+    //   headers: {
+    //     Accept: 'application/json',
+    //     'x-user-id': userId,
+    //   },
+    // })
+    // const json = await res.json()
+    connection.invoke("StartGame", roomCode, userId);
     Snackbar.show({
       pos: 'bottom-right',
       text: 'Starting game...',
       showAction: false,
     })
-    $goto(`../round/${json.roundId}`)
+    //$goto(`../round/${json.roundId}`)
   }
 </script>
 

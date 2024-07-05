@@ -2,8 +2,10 @@
   import { nicknameKey, roomCodeKey, apiUrl, userIdKey } from '../../config.ts'
   import { goto } from '@roxi/routify'
   import { checkUser } from '../../components/checkUser.js'
+  import * as signalR from '@microsoft/signalr';
   import Letters from '../../components/letters.svelte'
   import FalseGuesses from '../../components/falseGuesses.svelte'
+  import {connection} from '../../signalr.js'
   import Snackbar from 'node-snackbar'
   export let roundId
   export let roundState
@@ -11,10 +13,18 @@
   let userId = localStorage.getItem(userIdKey)
   let firstRender = true
   let killSwitch = false
+  let datarecieved = false
 
   checkUser()
 
-  async function getRoundState(noLoop = false) {
+  connection.on("GameState", data => {
+    datarecieved = true
+    getRoundState(data);
+  });
+
+  async function getRoundState(data = undefined, noLoop = true) {
+    
+    if(data == null) {
     const res = await fetch(`${apiUrl}/games/${roomCode}/rounds/${roundId}`, {
       method: 'GET',
       headers: {
@@ -22,7 +32,14 @@
         'x-user-id': userId,
       },
     })
-    const data = await res.json()
+    data = await res.json()
+        if(firstRender) {
+      connection.start()
+        .then(() => connection.invoke("InitRound", roomCode, userId, roundId).then(result => {
+          data = result
+      }));
+    }
+  }
 
     roundState = data
 
@@ -39,11 +56,6 @@
       killSwitch = true
       $goto('../lobby/summary')
     }
-    if (!killSwitch && !noLoop) {
-      setTimeout(() => {
-        getRoundState()
-      }, 3000)
-    }
   }
 
   function buildHangman() {
@@ -54,6 +66,7 @@
 
   async function submitGuess() {
     let guess = document.querySelector('.guess input').value
+    /*
     const response = await fetch(`${apiUrl}/games/${roomCode}/rounds/${roundId}/guess`, {
       method: 'POST',
       headers: {
@@ -64,14 +77,15 @@
       body: JSON.stringify({
         guess: guess,
       }),
-    })
+    })*/
+    connection.invoke("MakeGuess", userId, guess, roomCode, roundId);
     document.querySelector('.guess input').value = ''
     Snackbar.show({
       pos: 'bottom-right',
       text: 'Guess submitted',
       showAction: false,
     })
-    getRoundState(true)
+    //getRoundState(true)
   }
 </script>
 

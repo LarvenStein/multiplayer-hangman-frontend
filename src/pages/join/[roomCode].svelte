@@ -1,28 +1,32 @@
 <script>
   import { apiUrl, userIdKey, roomCodeKey, nicknameKey } from '../../config.ts'
   import { goto } from '@roxi/routify'
+  import * as signalR from '@microsoft/signalr';
+  import {connection} from '../../signalr.js'
+
   export let roomCode
 
   if (roomCode.length != 6) $goto('/')
 
   async function joinGame() {
     let nickname = document.querySelector('input').value
-    let userId
 
     if (nickname.replace(/\s/g, '').length < 3 || nickname.replace(/\s/g, '').length > 25) return alert('Please input a username.\nSpaces will be deleted.')
 
-    let response = await fetch(`${apiUrl}/games/${roomCode}/players`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        nickname: nickname,
-      }),
-    })
-    let responseArray = await response.json()
-    userId = responseArray.id
+    connection.start()
+    .then(() => connection.invoke("JoinGame", roomCode, nickname));
+  }
+
+  connection.on("PlayerData", data => {
+    onRegistration(data);
+  });
+
+  async function onRegistration(resp) {
+    let userId
+    let nickname
+
+    userId = resp.id
+    nickname = resp.nickname
 
     localStorage.setItem(userIdKey, userId)
     localStorage.setItem(roomCodeKey, roomCode)
