@@ -1,39 +1,32 @@
-### Want full control over everything in this template?
-We've created a new project called [**stackmix**](https://github.com/roxiness/stackmix). It's an experimental CLI that let's you pick and mix all features in a Routify template! Get started with `npx stackmix`
+# Multiplayer hangman frontend
+This is a frontend for my [multiplayer-hangman-api](https://github.com/LarvenStein/multiplayer-hangman-api) project, made with svelte and routify.
 
+## 🔧 Running / Building 
+If you want to set up this frontend yourself follow these steps: 
 
-# Routify Starter
+Requierments:
+- nodeJs with NPM
 
-Starter template for [Routify](https://github.com/roxiness/routify).
+1. Clone this repo
+    ```sh
+    git clone https://github.com/LarvenStein/https://github.com/LarvenStein/multiplayer-hangman-frontend.git
+    cd multiplayer-hangman-frontend/
+    ```
+2. Install dependencies
+    ```sh
+    npm install
+    ```
+3. Edit `src/config.ts` according to your needs. 
+    - You probatly want to change the `apiUrl` to a real instance of the [multiplayer-hangman-api](https://github.com/LarvenStein/multiplayer-hangman-api)
+4. Now you can run or build the project
+    - To run it, simply execute
+        ```sh
+        npm run dev
+        ```
+    - To build it, execute
+        ```sh
+        npm run build
+        ```
+        - The generated HTML files should be in the `/dist` folder
 
-# Get started
-
-To get started run:
-```sh
-mkdir routify-app
-cd routify-app
-npm init routify
-```
-
-
-# Scripts
-
-Run with `npm run <command>`, for example `npm run dev`
-
-| Command   | Description                                   |
-|-----------|-----------------------------------------------|
-| `dev`     | Development (port 5000)                       |
-| `build`   | Build your app for production!                |
-| `preview` | Preview the built version of your app locally |
-
-# Want a service worker?
-Checkout [vite-plugin-pwa](http://npmjs.org/vite-plugin-pwa)
-
-# Extra Configs
-We include a few extra configs to help make it easy to ship a Routify project:
-
-| Config Path        | Description                                                                                                                                                |
-|--------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `netlify.toml`     | This is the [Netlify](https://www.netlify.com/) config, you need this when publishing to Netlify                                                           |
-| `vercel.json`      | This is the [Vercel](https://vercel.com/) config, you need this when publishing to Vercel                                                                  |
-| `public/.htaccess` | If you build your site to static using [spank](https://www.npmjs.com/package/spank) you will need this when putting your site on an apache based webserver |
+For instructions on how to set up the api server, go to the [multiplayer-hangman-api repository](https://github.com/LarvenStein/multiplayer-hangman-api).
