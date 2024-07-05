@@ -1,6 +1,10 @@
 # Multiplayer hangman frontend
 This is a frontend for my [multiplayer-hangman-api](https://github.com/LarvenStein/multiplayer-hangman-api) project, made with svelte and routify.
 
+[![License: MPL 2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
+![GitHub last commit](https://img.shields.io/github/last-commit/LarvenStein/multiplayer-hangman-frontend)
+
+
 ## 🔧 Running / Building 
 If you want to set up this frontend yourself follow these steps: 
 
