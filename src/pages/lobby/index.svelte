@@ -25,6 +25,11 @@
     getPlayers(data)
   });
 
+  connection.on("RefreshPlayers", data => {
+    console.log("refresh")
+    getPlayers()
+  })
+
   connection.on("GameStarted", data => {
     checkGameStarted(data)
   })
@@ -44,12 +49,6 @@
   }
     players = data
 
-    // Loop it!
-    if (!killSwitch) {
-      // setTimeout(() => {
-      //   getPlayers()
-      // }, 10000)
-    }
   }
 
   async function checkGameStarted(data = undefined) {

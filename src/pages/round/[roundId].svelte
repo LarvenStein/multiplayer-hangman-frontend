@@ -41,9 +41,6 @@
     }
   }
 
-
-    console.log(data)
-
     roundState = data
 
     if (!firstRender) {
@@ -58,11 +55,6 @@
     if (data.message != undefined) {
       killSwitch = true
       $goto('../lobby/summary')
-    }
-    if (!killSwitch && !noLoop) {
-      setTimeout(() => {
-        getRoundState()
-      }, 3000)
     }
   }
 

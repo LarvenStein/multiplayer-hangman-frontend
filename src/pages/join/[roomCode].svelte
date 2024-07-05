@@ -13,17 +13,6 @@
 
     if (nickname.replace(/\s/g, '').length < 3 || nickname.replace(/\s/g, '').length > 25) return alert('Please input a username.\nSpaces will be deleted.')
 
-    // let response = await fetch(`${apiUrl}/games/${roomCode}/players`, {
-    //   method: 'POST',
-    //   headers: {
-    //     Accept: 'application/json',
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     nickname: nickname,
-    //   }),
-    // })
-    // let responseArray = await response.json()
     connection.start()
     .then(() => connection.invoke("JoinGame", roomCode, nickname));
   }
