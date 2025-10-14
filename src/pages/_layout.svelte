@@ -1,5 +1,5 @@
 <script>
-  import { TabsTransition } from '@roxi/routify/decorators'
+  import TabsTransition from '@roxi/routify/runtime/decorators/TabsTransition.svelte'
 
   window.onbeforeunload = function(e) {
     if(window.location.pathname .startsWith("/lobby") || window.location.pathname.startsWith("/round")) {
